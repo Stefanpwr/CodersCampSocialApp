@@ -4,6 +4,10 @@ import Navbar from "./Navbar";
 import RegisterForm from "./RegisterForm";
 import UserProfile from "./UserProfile";
 
+const FriendsPage = () => {
+    return <div>FriendsPage</div>;
+};
+
 const PostsPage = () => {
     return <div>PostsPage</div>;
 };
@@ -16,6 +20,8 @@ const PhotosPage = () => {
     return <div>PhotosPage</div>;
 };
 
+
+
 const App = () => {
     return(
         <div>
@@ -24,6 +30,7 @@ const App = () => {
                 <div>
                     <Route path="/" exact component={RegisterForm} />
                     <Route path="/profile" component={UserProfile} />
+                    <Route path="/friends" component={FriendsPage} />
                     <Route path="/posts" component={PostsPage} />
                     <Route path="/events" component={EventsPage} />
                     <Route path="/photos" component={PhotosPage} />

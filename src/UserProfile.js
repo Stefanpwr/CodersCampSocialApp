@@ -1,24 +1,41 @@
-import React from "react";
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 import faker from 'faker';
 import axios from 'axios';
+import config from './config';
 
-class Profile extends React.Component {
-    getUserProfile () {
-    axios.get('http...', {
 
+// class Profile extends React.Component {
+  async function getUserProfile (email) {
+    axios.get(`${config.userApi}${email}`, {
+        headers: {
+            'access-control-allow-origin': '*'
+        }
+    }).then (response => {
+        console.log('----yo: '+JSON.stringify(response));
     });
-}   
-}
+    }
+// }
 
 const ProfileDetail = props => {
- return(
+ getUserProfile('au8ujhikect@gmail');
+return (
         <div className="ui container profile">
             <div className="profile">
-            <a href="/" className="avatar">
-                <img alt="avatar" src={faker.image.avatar()} />
-            </a>
-            <h1 className="name-header">{props.username}</h1>
+                <div className="profile top">
+                    <a href="/" className="avatar">
+                        <img alt="avatar" src={faker.image.avatar()} />
+                    </a>
+                    <h1 className="name-header">{props.username}</h1>
+                </div>
+            <div className="button-area">
+                <div><Link to="/friends">Friends</Link></div>
+                <div><Link to="/posts">Posts</Link></div>
+                <div><Link to="/events">Events</Link></div>
+                <div><Link to="/photos">Photos</Link></div>
+                
+            </div>
             <div className="content">
                 <div className="birthday">Birthday: {props.dateOfBirth}</div>
                 <div className="email">E-mail: {props.email}</div>
@@ -32,8 +49,10 @@ const ProfileDetail = props => {
             </div>
             </div>
         </div>
-    )};
+    )
 
+
+}
     export default ProfileDetail;
 
    
