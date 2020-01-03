@@ -1,8 +1,11 @@
-import React  from "react";
+import React from "react";
 import { BrowserRouter, Route } from 'react-router-dom';
 import Navbar from "./Navbar";
 import RegisterForm from "./RegisterForm";
 import UserProfile from "./UserProfile";
+import EventList from './EventList.jsx';
+import EventInsert from './EventInsert.jsx';
+import EventUpdate from './EventUpdate.jsx';
 
 const PostsPage = () => {
     return <div>PostsPage</div>;
@@ -17,18 +20,26 @@ const PhotosPage = () => {
 };
 
 const App = () => {
-    return(
+    return (
         <div>
-            <Navbar/>
+            <Navbar />
             <BrowserRouter>
                 <div>
                     <Route path="/" exact component={RegisterForm} />
                     <Route path="/profile" component={UserProfile} />
                     <Route path="/posts" component={PostsPage} />
-                    <Route path="/events" component={EventsPage} />
+                    <Route path="/events/list" exact component={EventList} />
+                    <Route path="/events/create" exact component={EventInsert} />
+                    <Route
+                        path="/events/update/:id"
+                        exact
+                        component={EventUpdate}
+                    />
                     <Route path="/photos" component={PhotosPage} />
                 </div>
             </BrowserRouter>
+
+
         </div>
     );
 };
