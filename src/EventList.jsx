@@ -25,7 +25,7 @@ export default class EventsList extends Component {
     }
 
     componentDidMount() {
-        axios.get('http://10.0.0.2:5000/api/events/')
+        axios.get('https://10.0.0.2:5000/api/events/')
             .then(response => {
                 console.log(`${response.data}`)
                 this.setState({ events: response.data })
