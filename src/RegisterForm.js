@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 
 class RegisterForm extends React.Component {
 //     state = { 
@@ -41,14 +42,14 @@ render() {
             <div className="form-row">
                 <div className="col-md-3 mb-1">
                     <label htmlFor="validationCustom01">Username</label>
-                    <input type="text" className="form-control" id="validationCustom01" value="example123" required/>
+                    <input type="text" className="form-control" id="validationCustom01" required/>
                         <div className="valid-feedback">
                             Looks good!
                         </div>
                 </div>
                 <div className="col-md-3 mb-1">
                     <label htmlFor="validationCustom02">Date of Birth</label>
-                    <input type="text" className="form-control" id="validationCustom02" value="12-02-2000" required/>
+                    <input type="text" className="form-control" id="validationCustom02" required/>
                         <div className="valid-feedback">
                             Looks good!
                         </div>
@@ -62,7 +63,7 @@ render() {
                             <span className="input-group-text" id="inputGroupPrepend">@</span>
                         </div>
                         <input type="text" className="form-control" id="validationCustomUsername"
-                               aria-describedby="inputGroupPrepend" value="example@gmail.com" required/>
+                               aria-describedby="inputGroupPrepend" value="" required/>
                             <div className="invalid-feedback">
                                 Please choose a username.
                             </div>
@@ -145,7 +146,11 @@ render() {
                 </div>
             </div>
 
-            <button className="btn btn-dark" type="submit">Register</button>
+            <button className="btn btn-dark" type="submit" onClick={this.tryRegister}>Register</button>
+
+            <div><Link to="/Profile/au8ujhikect@gmail">To profile</Link></div>
+
+
         </form>
         </div>
 

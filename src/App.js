@@ -7,6 +7,10 @@ import EventList from './EventList.jsx';
 import EventInsert from './EventInsert.jsx';
 import EventUpdate from './EventUpdate.jsx';
 
+const FriendsPage = () => {
+    return <div>FriendsPage</div>;
+};
+
 const PostsPage = () => {
     return <div>PostsPage</div>;
 };
@@ -26,7 +30,8 @@ const App = () => {
             <BrowserRouter>
                 <div>
                     <Route path="/" exact component={RegisterForm} />
-                    <Route path="/profile" component={UserProfile} />
+                    <Route path="/profile" render={() => <UserProfile email='au8ujhikect@gmail'/>} />
+                    <Route path="/friends" component={FriendsPage} />
                     <Route path="/posts" component={PostsPage} />
                     <Route path="/events/list" exact component={EventList} />
                     <Route path="/events/create" exact component={EventInsert} />
