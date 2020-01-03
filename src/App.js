@@ -20,8 +20,6 @@ const PhotosPage = () => {
     return <div>PhotosPage</div>;
 };
 
-
-
 const App = () => {
     return(
         <div>
@@ -29,7 +27,7 @@ const App = () => {
             <BrowserRouter>
                 <div>
                     <Route path="/" exact component={RegisterForm} />
-                    <Route path="/profile" component={UserProfile} />
+                    <Route path="/profile" render={() => <UserProfile email='au8ujhikect@gmail'/>} />
                     <Route path="/friends" component={FriendsPage} />
                     <Route path="/posts" component={PostsPage} />
                     <Route path="/events" component={EventsPage} />

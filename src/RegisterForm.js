@@ -148,7 +148,7 @@ render() {
 
             <button className="btn btn-dark" type="submit" onClick={this.tryRegister}>Register</button>
 
-            <div><Link to="/Profile">To edit profile</Link></div>
+            <div><Link to="/Profile/au8ujhikect@gmail">To profile</Link></div>
 
 
         </form>
