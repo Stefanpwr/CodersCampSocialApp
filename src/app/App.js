@@ -1,8 +1,8 @@
 import React  from "react";
 import { BrowserRouter, Route } from 'react-router-dom';
-import Navbar from "./Navbar";
-import RegisterForm from "./RegisterForm";
-import UserProfile from "./UserProfile";
+import Navbar from "../components/Navbar.js";
+import RegisterForm from "../pages/RegisterForm.js";
+import UserProfile from "../pages/UserProfile.js";
 
 const FriendsPage = () => {
     return <div>FriendsPage</div>;

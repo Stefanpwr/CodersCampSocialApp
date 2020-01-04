@@ -1,9 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import faker from 'faker';
 import axios from 'axios';
-import config from './config';
+import config from '../api/config.js';
 
 class Profile extends React.Component {
     constructor(props) {
