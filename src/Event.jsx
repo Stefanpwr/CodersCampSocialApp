@@ -2,15 +2,13 @@ import React from "react";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
+
 import Col from "react-bootstrap/Col";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
 import Button from 'react-bootstrap/Button';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
 import EventInsert from "./EventInsert";
-import EventUpdate from "./EventUpdate";
 import EventList from "./EventList";
 import Events from "./imgs/event.jpg"
 const EventsPage = () => {
