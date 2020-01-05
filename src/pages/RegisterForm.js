@@ -137,7 +137,7 @@ render() {
                 <div className="form-check">
                     <input className="form-check-input" type="checkbox" value="" id="invalidCheck" required/>
                         <label className="form-check-label" htmlFor="invalidCheck">
-                            Agree to <a href="#" >terms and condition</a>
+                            Agree to <a href="#root" >terms and condition</a>
                         </label>
                         <div className="invalid-feedback">
                             You must agree before submitting.

@@ -1,123 +1,105 @@
 import React, { Component } from 'react';
-import ReactTable from 'react-table';
-import api from '../api/comment';
+import api from '../api';
+import Button from 'react-bootstrap/Button';
 
-import styled from 'styled-components';
-
-import 'react-table/react-table.css';
-
-const Wrapper = styled.div`padding: 0 40px 40px 40px`;
-const Update = styled.div`color: #ef9b0f; cursor: pointer`;
-const Delete = styled.div`color: #ff0000; cursor: pointer`;
-
-class UpdateComment extends Component {
-    updateUser = event => {
-        event.preventDefault()
-
-        window.location.href = `/comments/update/${this.props.id}`
-    };
-
-    render() {
-        return <Update onClick={this.updateUser}>Update</Update>
-    };
-};
+const Comments = props => (
+    <tr>
+        <td>{props.comment.author}</td>
+        <td>{props.comment.date}</td>
+        <td>{props.comment.content}</td>
+        <td>
+            <DeleteComment id={props.comment._id} />
+        </td>
+        <td>
+            <UpdateComment id={props.comment._id} />
+        </td>
+    </tr>
+);
 
 class DeleteComment extends Component {
-    deleteUser = event => {
-        event.preventDefault()
+    deleteComment = e => {
+        e.preventDefault()
 
-        if (window.confirm(`Do you want to delete this comment ${this.props.id} permanently?`)) {
+        if (
+            window.confirm(
+                `Do tou want to delete the comment ${this.props.id} permanently?`,
+            )
+        ) {
             api.deleteCommentById(this.props.id)
             window.location.reload()
         }
     };
 
     render() {
-        return <Delete onClick={this.deleteUser}>Delete</Delete>
+        return <Button onClick={this.deleteComment}>Delete</Button>
+    };
+};
+
+class UpdateComment extends Component {
+    updateComment = e => {
+        e.preventDefault()
+
+        window.location.href = `/comments/update/:${this.props.id}`
+    };
+
+    render() {
+        return <Button onClick={this.updateComment}>Update</Button>
     };
 };
 
 class CommentsList extends Component {
+
     constructor(props) {
-        super(props)
-        this.state = {
-            comments: [],
-            columns: [],
-            isLoading: false,
-        };
+        super(props);
+
+        this.state = { comments: [] };
     };
 
-    componentDidMount = async () => {this.setState({ isLoading: true })
+    componentDidMount = async () => {
+        this.setState({ isLoading: true })
 
-        await api.getAllComments().then(comments => {
+        await api.getAllComments()
+        .then(response => {
             this.setState({
-                comments: comments.data.data,
+                comments: response.data,
                 isLoading: false,
             })
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    };
+
+    commentsList() {
+        console.log(this.state.comments)
+        return this.state.comments.map(comments => {
+            return <Comments comment={comments} deletComment={this.deleteComment} key={comments._id} />;
         })
     };
 
     render() {
-        const { comments, isLoading } = this.state
-
-        const columns = [
-            {
-                Header: 'Author',
-                accessor: 'author',
-                filterable: true,
-            },
-            {
-                Header: 'Date of create',
-                accessor: 'dateOfCreate',
-                filterable: true,
-            },
-            {
-                Header: 'content',
-                accessor: 'content',
-                filterable: true,
-            },
-            {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <DeleteComment id={props.original._id} />
-                        </span>
-                    )
-                },
-            },
-            {
-                Header: '',
-                accessor: '',
-                Cell: function(props) {
-                    return (
-                        <span>
-                            <UpdateComment id={props.original._id} />
-                        </span>
-                    )
-                },
-            },
-        ]
-
-        let showTable = true
-        //if (!comments.length) {showTable = false}
-
         return (
-            <Wrapper>
-                {showTable && (
-                    <ReactTable
-                        data={comments}
-                        columns={columns}
-                        loading={isLoading}
-                        defaultPageSize={10}
-                        showPageSizeOptions={true}
-                        minRows={0}
-                    />
-                )}
-            </Wrapper>
-        );
-    };
-};
+            <div>
+                <h3>Comments</h3>
+                <table className="table">
+                    <thead className="thead-light">
+                        <tr>
+                            <th>Id</th>
+                            <th>Author</th>
+                            <th>Date</th>
+                            <th>Content</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.commentsList()}
+                    </tbody>
+                </table>
+                <Button variant="danger" size="sm" href={'/commments'} block="block">
+                    Back to Comments
+                </Button>
+            </div>
+        )
+    }
+}
 
 export default CommentsList;

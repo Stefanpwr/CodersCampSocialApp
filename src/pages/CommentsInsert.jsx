@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import api from '../api/comment';
-
-import styled from 'styled-components';
-
-const Title = styled.h1.attrs({className: 'h1'})``;
-const Wrapper = styled.div.attrs({className: 'form-group'})`margin: 0 30px`;
-const Label = styled.label`margin: 5px`;
-const InputText = styled.input.attrs({className: 'form-control'})`margin: 5px`;
-const Button = styled.button.attrs({className: `btn btn-primary`})`margin: 15px 15px 15px 5px`;
-const CancelButton = styled.a.attrs({className: `btn btn-danger`})`margin: 15px 15px 15px 5px`;
+import axios from 'axios';
+import api from '../api';
+import Button from 'react-bootstrap/Button';
 
 class CommentsInsert extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
+            author: '',
+            date: '',
             content: ''
-        }
+        };
+    };
+
+    handleChangeInputAuthor = async event => {
+        const author = event.target.value
+        this.setState({ author })
+    };
+
+    handleChangeInputDate = async event => {
+        const date = event.target.value
+        this.setState({ date })
     };
 
     handleChangeInputContent = async event => {
@@ -24,35 +29,60 @@ class CommentsInsert extends Component {
         this.setState({ content })
     };
 
-    handleIncludeComment = async () => {
-        const content = this.state;
+    handleIncludeComment = async (e) => {
+        e.preventDefault();
+        const { author, date, content} = this.state
+        const payload = {author, date, content}
 
-        await api.insertComment(content).then(res => {
+        await api.insertComment(payload).then(res => {
             window.alert(`Comment inserted successfully`)
             this.setState({
                 author: '',
-                dateOfCreate: '',
+                date: '',
                 content: '',
-            });
+            })
         });
     };
 
     render() {
-        const { content } = this.state
         return (
-            <Wrapper>
-                <Title>Create Comment</Title>
+            <div>
+                <h3>Create New Comment</h3>
+                <form >
+                    <div className="form-group">
+                        <label>Comment author: </label>
+                        <input type="text"
+                            required
+                            className="form-control"
+                            value={this.state.author}
+                            onChange={this.handleChangeInputAuthor}
+                        />
+                        <label>Comment date: </label>
+                        <input type="date"
+                            required
+                            className="form-control"
+                            value={this.state.date}
+                            onChange={this.handleChangeInputDate}
+                        />
+                        <label>Comment content: </label>
+                        <textarea
+                            className="form-control"
+                            value={this.state.content}
+                            onChange={this.handleChangeInputContent}
+                        />
+                    </div>
 
-                <Label>Content: </Label>
-                <InputText
-                    type="text"
-                    value={content}
-                    onChange={this.handleChangeInputContent}
-                />
+                    <div className="form-group">
+                        <Button variant="primary" size="sm" onClick={this.onSubmit} block="block" type="submit">
+                            Create Comment
+                        </Button>
 
-                <Button onClick={this.handleIncludeComment}>Add Comment</Button>
-                <CancelButton href={'/comments/list'}>Cancel</CancelButton>
-            </Wrapper>
+                        <Button variant="danger" size="sm" href={'/comments'} block="block">
+                            Back to Comments
+                        </Button>
+                    </div>
+                </form>
+            </div>
         );
     };
 };

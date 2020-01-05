@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
-import api from '../api/comment';
-
-import styled from 'styled-components';
-
-const Title = styled.h1.attrs({className: 'h1'})``;
-const Wrapper = styled.div.attrs({className: 'form-group'})`margin: 0 30px;`;
-const Label = styled.label`margin: 5px;`;
-const InputText = styled.input.attrs({className: 'form-control'})`margin: 5px;`;
-const Button = styled.button.attrs({className: `btn btn-primary`})`margin: 15px 15px 15px 5px;`;
-const CancelButton = styled.a.attrs({className: `btn btn-danger`})`margin: 15px 15px 15px 5px;`;
+import api from '../api'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button';
 
 class CommentsUpdate extends Component {
+
     constructor(props) {
         super(props)
 
         this.state = {
             id: this.props.match.params.id,
-            author: '',
-            dateOfCreate: '',
-            content: '',
+            name: '',
+            date: '',
+            description: ''
         };
     };
 
@@ -27,9 +21,9 @@ class CommentsUpdate extends Component {
         this.setState({ author })
     };
 
-    handleChangeInputDateOfCreate = async event => {
-        const dateOfCreate = event.target.value
-        this.setState({ dateOfCreate })
+    handleChangeInputDate = async event => {
+        const date = event.target.value
+        this.setState({ date })
     };
 
     handleChangeInputContent = async event => {
@@ -38,17 +32,18 @@ class CommentsUpdate extends Component {
     };
 
     handleUpdateComment = async () => {
-        const { id, author, dateOfCreate, content } = this.state
-        const payload = { author, dateOfCreate, content }
+        const { id, author, date, content } = this.state
+        const payload = { author, date, content }
 
         await api.updateCommentById(id, payload).then(res => {
             window.alert(`Comment updated successfully`)
             this.setState({
                 author: '',
-                dateOfCreate: '',
+                date: '',
                 content: '',
             })
         })
+        this.props.history.push('/comments')
     };
 
     componentDidMount = async () => {
@@ -57,41 +52,39 @@ class CommentsUpdate extends Component {
 
         this.setState({
             author: comment.data.data.author,
-            dateOfCreate: comment.data.data.dateOfCreate,
+            date: comment.data.data.date,
             content: comment.data.data.content
         })
     };
 
     render() {
-        const { author, dateOfCreate, content } = this.state
         return (
-            <Wrapper>
-                <Title>Create Comment</Title>
+            <div className="form-wrapper">
+                <Form >
+                    <Form.Group controlId="Author">
+                        <Form.Label>Author</Form.Label>
+                        <Form.Control type="text" value={this.state.author} onChange={this.handleChangeInputAuthor} />
+                    </Form.Group>
 
-                <Label>Author: </Label>
-                <InputText
-                    type="text"
-                    value={author}
-                    onChange={this.handleChangeInputAuthor}
-                />
+                    <Form.Group controlId="Date">
+                        <Form.Label>Date</Form.Label>
+                        <Form.Control type="date" value={this.state.date} onChange={this.handleChangeInputDate} />
+                    </Form.Group>
 
-                <Label>Date of Create: </Label>
-                <InputText
-                    type="date"
-                    value={dateOfCreate}
-                    onChange={this.handleChangeInputDateOfCreate}
-                />
+                    <Form.Group controlId="Content">
+                        <Form.Label>Content</Form.Label>
+                        <Form.Control type="textarea" value={this.state.content} onChange={this.handleChangeInputContent} />
+                    </Form.Group>
 
-                <Label>Content: </Label>
-                <InputText
-                    type="text"
-                    value={content}
-                    onChange={this.handleChangeInputContent}
-                />
 
-                <Button onClick={this.handleUpdateComment}>Add Comment</Button>
-                <CancelButton href={'/comments/list'}>Cancel</CancelButton>
-            </Wrapper>
+                    <Button variant="primary" size="sm" onClick={this.handleUpdateComment} block="block" type="submit">
+                        Update Comment
+                    </Button>
+                    <Button variant="danger" size="sm" href={'/comments'} block="block">
+                        Back to Comment
+                    </Button>
+                </Form>
+            </div>
         )
     };
 };

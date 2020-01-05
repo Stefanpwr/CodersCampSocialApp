@@ -1,4 +1,8 @@
-import api from "./api";
+import axios from 'axios';
+
+const api = axios.create({
+    baseURL: '/api',
+});
 
 export const insertComment = payload => api.post(`/comment`, payload);
 export const getAllComments = () => api.get(`/comments`);
