@@ -32,7 +32,7 @@ class Profile extends React.Component {
     }
 
     async getUserProfile(email) {
-        axios.get(`${config.userApi}${email}`).then(response => {
+        axios.get(config.userApi.find(email)).then(response => {
             console.log('----yo: ' + JSON.stringify(response));
             this.setState({
                 username: response.data.username,
@@ -49,6 +49,16 @@ class Profile extends React.Component {
                 canEdit: true,
                 isEditing: false
             });
+        });
+    }
+    
+    async updateUserProfile() {
+        axios.put(config.userApi.update(this.state.userId), this.state, {
+            headers: { 'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json' }
+        })
+        .then(response => {
+            console.log('----yo: ' + JSON.stringify(response));
         });
     }
 
@@ -98,7 +108,7 @@ class Profile extends React.Component {
                 </div>
                 <div className="col-md-4">
                     <label className="label phone">Phone: <input type="text" id="phone"
-                        onChange={e => this.change('PhoneNumber', e)} value={this.state.PhoneNumber} required />
+                        onChange={e => this.change('phoneNumber', e)} value={this.state.phoneNumber} required />
                     </label>
                 </div>
             </div>
@@ -149,6 +159,9 @@ class Profile extends React.Component {
     change = (key, e) => {
         this.stateChanged();
         this.setState({ [key]: e.target.value });
+    }
+    save = () => {
+        this.updateUserProfile();
     }
 }
 export default Profile;   
