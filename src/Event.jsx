@@ -32,12 +32,6 @@ function Event() {
                         </Nav>
 
                         <Nav>
-                            <Link to={"/events/update/:id"} className="nav-link">
-                                Edit Event
-                </Link>
-                        </Nav>
-
-                        <Nav>
                             <Link to={"/events/list"} className="nav-link">
                                 Event List
                 </Link>
@@ -56,7 +50,6 @@ function Event() {
                         <Switch>
                             <Route exact path='/events/' component={EventList} />
                             <Route path="/events/create" component={EventInsert} />
-                            <Route path="/events/update/:id" component={EventUpdate} />
                             <Route path="/events/list" component={EventList} />
                         </Switch>
                     </div>

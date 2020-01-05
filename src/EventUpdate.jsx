@@ -8,13 +8,6 @@ export default class EventUpdate extends Component {
     constructor(props) {
         super(props)
 
-        this.handleChangeInputName = this.handleChangeInputName.bind(this);
-        this.handleChangeInputPlace = this.handleChangeInputPlace.bind(this);
-        this.handleChangeInputDate = this.handleChangeInputDate.bind(this);
-        this.handleChangeInputDescription = this.handleChangeInputDescription.bind(this);
-        this.handleUpdateEvent = this.handleUpdateEvent.bind(this);
-
-        // State
         this.state = {
             id: this.props.match.params.id,
             name: '',
@@ -22,32 +15,6 @@ export default class EventUpdate extends Component {
             date: '',
             description: ''
         }
-    }
-
-    // componentDidMount() {
-    //     axios.get('/update/' + this.props.match.params.id)
-    //         .then(res => {
-    //             this.setState({
-    //                 name: res.data.name,
-    //                 place: res.data.place,
-    //                 date: res.data.date,
-    //                 description: res.data.description
-    //             });
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         })
-    // }
-    componentDidMount = async () => {
-        const { id } = this.state
-        const event = await api.getEventById(id)
-
-        this.setState({
-            name: event.data.data.name,
-            place: event.data.data.place,
-            date: event.data.data.date,
-            description: event.data.data.description
-        })
     }
 
     handleChangeInputName = async event => {
@@ -66,27 +33,6 @@ export default class EventUpdate extends Component {
         const description = event.target.value
         this.setState({ description })
     }
-    // onSubmit(e) {
-    //     e.preventDefault()
-
-    //     const eventObject = {
-    //         name: this.state.name,
-    //         place: this.state.place,
-    //         date: this.state.date,
-    //         description: this.state.description
-    //     };
-
-    //     axios.put('/update/' + this.props.match.params.id, eventObject)
-    //         .then((res) => {
-    //             console.log(res.data)
-    //             console.log('Event successfully updated')
-    //         }).catch((error) => {
-    //             console.log(error)
-    //         })
-
-    //     // Redirect to Student List 
-    //     this.props.history.push('/events')
-    // }
     handleUpdateEvent = async () => {
         const { id, name, place, date, description } = this.state
         const payload = { name, place, date, description }
@@ -102,6 +48,19 @@ export default class EventUpdate extends Component {
         })
         this.props.history.push('/events')
     }
+
+    componentDidMount = async () => {
+        const { id } = this.state
+        const event = await api.getEventById(id)
+
+        this.setState({
+            name: event.data.data.name,
+            place: event.data.data.place,
+            date: event.data.data.date,
+            description: event.data.data.description
+        })
+    }
+
 
     render() {
         return (<div className="form-wrapper">

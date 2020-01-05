@@ -3,37 +3,59 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import api from './api'
+import Button from 'react-bootstrap/Button';
 const Events = props => (
     <tr>
+        <td>{props.event._id}</td>
         <td>{props.event.name}</td>
-        <td>{props.event.description}</td>
         <td>{props.event.place}</td>
         <td>{props.event.date}</td>
+        <td>{props.event.description}</td>
         <td>
-            {/* <Link to={"/update/" + props.events._id}>edit</Link> | <a href="#" onClick={() => { props.deleteEvent(props.events._id) }}>delete</a> */}
+            <DeleteEvent id={props.event._id} />
+        </td>
+        <td>
+            <UpdateEvent id={props.event._id} />
         </td>
     </tr>
 )
+class DeleteEvent extends Component {
+    deleteEvent = e => {
+        e.preventDefault()
 
+        if (
+            window.confirm(
+                `Do tou want to delete the event ${this.props.id} permanently?`,
+            )
+        ) {
+            api.deleteEventById(this.props.id)
+            window.location.reload()
+        }
+    }
+
+    render() {
+        return <Button onClick={this.deleteEvent}>Delete</Button>
+    }
+}
+
+class UpdateEvent extends Component {
+    updateEvent = e => {
+        e.preventDefault()
+
+        window.location.href = `/events/update/:${this.props.id}`
+    }
+
+    render() {
+        return <Button onClick={this.updateEvent}>Update</Button>
+    }
+}
 export default class EventsList extends Component {
     constructor(props) {
         super(props);
 
-        this.deleteEvents = this.deleteEvents.bind(this)
-
         this.state = { events: [] };
     }
 
-    // componentDidMount() {
-    //     axios.get('api/events/')
-    //         .then(response => {
-    //             console.log(`${response.data}`)
-    //             this.setState({ events: response.data })
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         })
-    // }
     componentDidMount = async () => {
         this.setState({ isLoading: true })
 
@@ -47,26 +69,6 @@ export default class EventsList extends Component {
             .catch((error) => {
                 console.log(error);
             })
-    }
-
-    // componentDidMount() {
-    //     fetch('/api/proposals')
-    //       .then(response => {
-    //         console.log(response);
-    //         return response.json();
-    //       })
-    //       .then((proposals) => { 
-    //         console.log(proposals);
-    //         this.setState({ proposals }); 
-    //       });
-    // }
-    deleteEvents(id) {
-        axios.delete('api/events/' + id)
-            .then(response => { console.log(response.data) });
-
-        this.setState({
-            events: this.state.events.filter(el => el._id !== id)
-        })
     }
 
     eventsList() {
@@ -83,6 +85,7 @@ export default class EventsList extends Component {
                 <table className="table">
                     <thead className="thead-light">
                         <tr>
+                            <th>Id</th>
                             <th>Name</th>
                             <th>Place</th>
                             <th>Date</th>
@@ -93,6 +96,9 @@ export default class EventsList extends Component {
                         {this.eventsList()}
                     </tbody>
                 </table>
+                <Button variant="danger" size="sm" href={'/events'} block="block">
+                    Back to Events
+        </Button>
             </div>
         )
     }

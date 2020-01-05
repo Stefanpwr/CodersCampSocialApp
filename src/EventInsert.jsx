@@ -8,12 +8,6 @@ export default class CreateEvent extends Component {
     constructor(props) {
         super(props);
 
-        this.handleChangeInputName = this.handleChangeInputName.bind(this);
-        this.handleChangeInputPlace = this.handleChangeInputPlace.bind(this);
-        this.handleChangeInputDate = this.handleChangeInputDate.bind(this);
-        this.handleChangeInputDescription = this.handleChangeInputDescription.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-
         this.state = {
             name: '',
             place: '',
@@ -39,45 +33,21 @@ export default class CreateEvent extends Component {
         this.setState({ description })
     }
 
-
-    onSubmit = async (e) => {
+    handleIncludeEvent = async (e) => {
         e.preventDefault();
+        const { name, place, date, description } = this.state
+        const payload = { name, place, date, description }
 
-        const event = {
-            name: this.state.name,
-            place: this.state.place,
-            date: this.state.date,
-            description: this.state.description
-        }
-
-        console.log(event);
-
-        await axios.post('/create', event)
-            .then(res => console.log(res.data));
-
-        this.setState({
-            name: '',
-            place: '',
-            date: '',
-            description: ''
-
+        await api.insertEvent(payload).then(res => {
+            window.alert(`Event inserted successfully`)
+            this.setState({
+                name: '',
+                place: '',
+                date: '',
+                description: ''
+            })
         })
     }
-    // handleIncludeEvent = async (e) => {
-    //     e.preventDefault();
-    //     const { name, place, date, description } = this.state
-    //     const payload = { name, place, date, description }
-
-    //     await api.insertEvent(payload).then(res => {
-    //         window.alert(`Event inserted successfully`)
-    //         this.setState({
-    //             name: '',
-    //             place: '',
-    //             date: '',
-    //             description: ''
-    //         })
-    //     })
-    // }
 
 
     render() {
@@ -115,7 +85,7 @@ export default class CreateEvent extends Component {
                         />
                     </div>
                     <div className="form-group">
-                        <Button variant="primary" size="sm" onClick={this.onSubmit} block="block" type="submit">
+                        <Button variant="primary" size="sm" onClick={this.handleIncludeEvent} block="block" type="submit">
                             Create Event
         </Button>
 
