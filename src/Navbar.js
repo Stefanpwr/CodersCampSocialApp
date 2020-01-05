@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from 'react-dom';
 
  function Navbar() {
     return(
@@ -12,8 +13,6 @@ import React from "react";
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav mr-auto">
-
-
 
                 </ul>
                 <form className="form-inline my-2 my-lg-0">

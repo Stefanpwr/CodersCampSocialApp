@@ -1,21 +1,55 @@
 import React from "react";
+import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 
-function RegisterForm(){
+class RegisterForm extends React.Component {
+//     state = { 
+//         username: '',
+//         dateOfBirth: '',
+//         email: '',
+//         phoneNumber: '',
+//         relationship: '',
+//         cityOfOrigin: '',
+//         cityOfLiving: '',
+//         hobbies: '',
+//         work: '',
+//         education: ''
+//        };   
+
+// onFormSubmit(event) {
+//     event.preventDefault();
+//     console.log("working");
+// }
+
+// userNameChanged = (e) => {
+//         this.setState({username: e.target.value});
+//         console.log(JSON.stringify(this.state));
+// }
+// dateOfBirthChanged = (e) => {
+//         this.setState({dateOfBirth: e.target.value});
+//         console.log(JSON.stringify(this.state));
+// }
+// relationChanged = (e) => {
+//     this.setState({relationship: e.target.value });
+//     console.log(JSON.stringify(this.state));
+//}
+
+render() {
     return(
         <div className="container register">
             <h1 className="toast-header">Sign Up right now</h1>
-        <form className="needs-validation" noValidate>
+        <form onSubmit={this.onFormSubmit} className="needs-validation" noValidate>
             <div className="form-row">
                 <div className="col-md-3 mb-1">
                     <label htmlFor="validationCustom01">Username</label>
-                    <input type="text" className="form-control" id="validationCustom01" value="example123" required/>
+                    <input type="text" className="form-control" id="validationCustom01" required/>
                         <div className="valid-feedback">
                             Looks good!
                         </div>
                 </div>
                 <div className="col-md-3 mb-1">
                     <label htmlFor="validationCustom02">Date of Birth</label>
-                    <input type="text" className="form-control" id="validationCustom02" value="12-02-2000" required/>
+                    <input type="text" className="form-control" id="validationCustom02" required/>
                         <div className="valid-feedback">
                             Looks good!
                         </div>
@@ -29,7 +63,7 @@ function RegisterForm(){
                             <span className="input-group-text" id="inputGroupPrepend">@</span>
                         </div>
                         <input type="text" className="form-control" id="validationCustomUsername"
-                               aria-describedby="inputGroupPrepend" value="example@gmail.com" required/>
+                               aria-describedby="inputGroupPrepend" value="" required/>
                             <div className="invalid-feedback">
                                 Please choose a username.
                             </div>
@@ -37,7 +71,7 @@ function RegisterForm(){
                 </div>
                 <div className="col-md-3 mb-1">
                     <label htmlFor="validationCustom03">Phone number</label>
-                    <input type="text" className="form-control" id="validationCustom03" required/>
+                    <input type="text" className="form-control" id="validationCustom03" value="" required/>
                     <div className="invalid-feedback">
                         Please provide a valid city.
                     </div>
@@ -48,11 +82,11 @@ function RegisterForm(){
                 <div className="col-md-3 mb-1">
                     <label htmlFor="validationCustom04">Relationship</label>
                     <select className="custom-select" id="validationCustom04" required>
-                        <option selected disabled value="">Single</option>
-                        <option>Dating</option>
-                        <option>Married</option>
-                        <option>Divorced</option>
-                        <option>Complicated</option>
+                        <option value="Single">Single</option>
+                        <option value='Dating'>Dating</option>
+                        <option value='Married'>Married</option>
+                        <option value='Divorced'>Divorced</option>
+                        <option value='Complicated'>Complicated</option>
                     </select>
                     <div className="invalid-feedback">
                         Please select a valid state.
@@ -87,7 +121,7 @@ function RegisterForm(){
             <div className="form-row">
                 <div className="col-md-3 mb-1">
                     <label htmlFor="validationCustom05">Work</label>
-                    <input type="text" className="form-control" id="validationCustom05" />
+                    <input type="text" className="form-control" id="validationCustom05" value='' />
                     <div className="invalid-feedback">
                         Please provide a valid zip.
                     </div>
@@ -112,10 +146,20 @@ function RegisterForm(){
                 </div>
             </div>
 
-            <button className="btn btn-dark" type="submit">Register</button>
+            <button className="btn btn-dark" type="submit" onClick={this.tryRegister}>Register</button>
+
+            <div><Link to="/Profile/au8ujhikect@gmail">To profile</Link></div>
+
+
         </form>
         </div>
 
-)
+)}
+
+tryRegister(){
+    console.log("Yep");
 }
+
+}
+
 export default RegisterForm;
