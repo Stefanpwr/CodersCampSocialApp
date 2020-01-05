@@ -1,16 +1,17 @@
 
 import React, { Component } from 'react';
 import axios from 'axios';
+import api from './api'
+import Button from 'react-bootstrap/Button';
 
 export default class CreateEvent extends Component {
     constructor(props) {
         super(props);
 
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onChangePlace = this.onChangePlace.bind(this);
-        this.onChangeDate = this.onChangeDate.bind(this);
-        this.onChangePlace = this.onChangePlace.bind(this);
-        this.onChangeDescription = this.onChangeDescription.bind(this);
+        this.handleChangeInputName = this.handleChangeInputName.bind(this);
+        this.handleChangeInputPlace = this.handleChangeInputPlace.bind(this);
+        this.handleChangeInputDate = this.handleChangeInputDate.bind(this);
+        this.handleChangeInputDescription = this.handleChangeInputDescription.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
@@ -21,33 +22,25 @@ export default class CreateEvent extends Component {
         }
     }
 
-    onChangeName(e) {
-        this.setState({
-            name: e.target.value,
-
-        })
+    handleChangeInputName = async event => {
+        const name = event.target.value
+        this.setState({ name })
     }
-    onChangePlace(e) {
-        this.setState({
-            place: e.target.value
-
-        })
+    handleChangeInputPlace = async event => {
+        const place = event.target.value
+        this.setState({ place })
     }
-    onChangeDate(e) {
-        this.setState({
-            date: e.target.value
-
-        })
+    handleChangeInputDate = async event => {
+        const date = event.target.value
+        this.setState({ date })
     }
-    onChangeDescription(e) {
-        this.setState({
-            description: e.target.value
-
-        })
+    handleChangeInputDescription = async event => {
+        const description = event.target.value
+        this.setState({ description })
     }
 
 
-    onSubmit(e) {
+    onSubmit = async (e) => {
         e.preventDefault();
 
         const event = {
@@ -59,7 +52,7 @@ export default class CreateEvent extends Component {
 
         console.log(event);
 
-        axios.post('http://10.0.0.2:5000/api/events/create', event)
+        await axios.post('/create', event)
             .then(res => console.log(res.data));
 
         this.setState({
@@ -70,43 +63,65 @@ export default class CreateEvent extends Component {
 
         })
     }
+    // handleIncludeEvent = async (e) => {
+    //     e.preventDefault();
+    //     const { name, place, date, description } = this.state
+    //     const payload = { name, place, date, description }
+
+    //     await api.insertEvent(payload).then(res => {
+    //         window.alert(`Event inserted successfully`)
+    //         this.setState({
+    //             name: '',
+    //             place: '',
+    //             date: '',
+    //             description: ''
+    //         })
+    //     })
+    // }
+
 
     render() {
         return (
             <div>
                 <h3>Create New Event</h3>
-                <form onSubmit={this.onSubmit}>
+                <form >
                     <div className="form-group">
                         <label>Event name: </label>
                         <input type="text"
                             required
                             className="form-control"
                             value={this.state.name}
-                            onChange={this.onChangeName}
+                            onChange={this.handleChangeInputName}
                         />
                         <label>Event place: </label>
                         <input type="text"
                             required
                             className="form-control"
                             value={this.state.place}
-                            onChange={this.onChangePlace}
+                            onChange={this.handleChangeInputPlace}
                         />
                         <label>Event date: </label>
                         <input type="date"
                             required
                             className="form-control"
                             value={this.state.date}
-                            onChange={this.onChangeDate}
+                            onChange={this.handleChangeInputDate}
                         />
                         <label>Event description: </label>
                         <textarea
                             className="form-control"
                             value={this.state.description}
-                            onChange={this.onChangeDescription}
+                            onChange={this.handleChangeInputDescription}
                         />
                     </div>
                     <div className="form-group">
-                        <input type="submit" value="Create Event" className="btn btn-primary" />
+                        <Button variant="primary" size="sm" onClick={this.onSubmit} block="block" type="submit">
+                            Create Event
+        </Button>
+
+                        <Button variant="danger" size="sm" href={'/events'} block="block">
+                            Back to Events
+        </Button>
                     </div>
                 </form>
             </div>

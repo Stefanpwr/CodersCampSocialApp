@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import api from './api'
 const Events = props => (
     <tr>
         <td>{props.event.name}</td>
@@ -10,7 +10,7 @@ const Events = props => (
         <td>{props.event.place}</td>
         <td>{props.event.date}</td>
         <td>
-            <Link to={"/update/" + props.events._id}>edit</Link> | <a href="#" onClick={() => { props.deleteEvent(props.events._id) }}>delete</a>
+            {/* <Link to={"/update/" + props.events._id}>edit</Link> | <a href="#" onClick={() => { props.deleteEvent(props.events._id) }}>delete</a> */}
         </td>
     </tr>
 )
@@ -24,19 +24,44 @@ export default class EventsList extends Component {
         this.state = { events: [] };
     }
 
-    componentDidMount() {
-        axios.get('https://10.0.0.2:5000/api/events/')
+    // componentDidMount() {
+    //     axios.get('api/events/')
+    //         .then(response => {
+    //             console.log(`${response.data}`)
+    //             this.setState({ events: response.data })
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         })
+    // }
+    componentDidMount = async () => {
+        this.setState({ isLoading: true })
+
+        await api.getAllEvents()
             .then(response => {
-                console.log(`${response.data}`)
-                this.setState({ events: response.data })
+                this.setState({
+                    events: response.data,
+                    isLoading: false,
+                })
             })
             .catch((error) => {
                 console.log(error);
             })
     }
 
+    // componentDidMount() {
+    //     fetch('/api/proposals')
+    //       .then(response => {
+    //         console.log(response);
+    //         return response.json();
+    //       })
+    //       .then((proposals) => { 
+    //         console.log(proposals);
+    //         this.setState({ proposals }); 
+    //       });
+    // }
     deleteEvents(id) {
-        axios.delete('http://10.0.0.2:5000/api/events/' + id)
+        axios.delete('api/events/' + id)
             .then(response => { console.log(response.data) });
 
         this.setState({

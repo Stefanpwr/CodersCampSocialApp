@@ -2,20 +2,21 @@ import React, { Component } from "react";
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
-
+import api from './api'
 export default class EventUpdate extends Component {
 
     constructor(props) {
         super(props)
 
-        this.onChangeName = this.onChangeName.bind(this);
-        this.onChangePlace = this.onChangePlace.bind(this);
-        this.onChangeDate = this.onChangeDate.bind(this);
-        this.onChangeDescription = this.onChangeDescription.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.handleChangeInputName = this.handleChangeInputName.bind(this);
+        this.handleChangeInputPlace = this.handleChangeInputPlace.bind(this);
+        this.handleChangeInputDate = this.handleChangeInputDate.bind(this);
+        this.handleChangeInputDescription = this.handleChangeInputDescription.bind(this);
+        this.handleUpdateEvent = this.handleUpdateEvent.bind(this);
 
         // State
         this.state = {
+            id: this.props.match.params.id,
             name: '',
             place: '',
             date: '',
@@ -23,84 +24,113 @@ export default class EventUpdate extends Component {
         }
     }
 
-    componentDidMount() {
-        axios.get('http://localhost:5000/events/update/' + this.props.match.params.id)
-            .then(res => {
-                this.setState({
-                    name: res.data.name,
-                    place: res.data.place,
-                    date: res.data.date,
-                    description: res.data.description
-                });
+    // componentDidMount() {
+    //     axios.get('/update/' + this.props.match.params.id)
+    //         .then(res => {
+    //             this.setState({
+    //                 name: res.data.name,
+    //                 place: res.data.place,
+    //                 date: res.data.date,
+    //                 description: res.data.description
+    //             });
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         })
+    // }
+    componentDidMount = async () => {
+        const { id } = this.state
+        const event = await api.getEventById(id)
+
+        this.setState({
+            name: event.data.data.name,
+            place: event.data.data.place,
+            date: event.data.data.date,
+            description: event.data.data.description
+        })
+    }
+
+    handleChangeInputName = async event => {
+        const name = event.target.value
+        this.setState({ name })
+    }
+    handleChangeInputPlace = async event => {
+        const place = event.target.value
+        this.setState({ place })
+    }
+    handleChangeInputDate = async event => {
+        const date = event.target.value
+        this.setState({ date })
+    }
+    handleChangeInputDescription = async event => {
+        const description = event.target.value
+        this.setState({ description })
+    }
+    // onSubmit(e) {
+    //     e.preventDefault()
+
+    //     const eventObject = {
+    //         name: this.state.name,
+    //         place: this.state.place,
+    //         date: this.state.date,
+    //         description: this.state.description
+    //     };
+
+    //     axios.put('/update/' + this.props.match.params.id, eventObject)
+    //         .then((res) => {
+    //             console.log(res.data)
+    //             console.log('Event successfully updated')
+    //         }).catch((error) => {
+    //             console.log(error)
+    //         })
+
+    //     // Redirect to Student List 
+    //     this.props.history.push('/events')
+    // }
+    handleUpdateEvent = async () => {
+        const { id, name, place, date, description } = this.state
+        const payload = { name, place, date, description }
+
+        await api.updateEventById(id, payload).then(res => {
+            window.alert(`Event updated successfully`)
+            this.setState({
+                name: '',
+                place: '',
+                date: '',
+                description: ''
             })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
-
-    onChangeName(e) {
-        this.setState({ name: e.target.value })
-    }
-
-    onChangePlace(e) {
-        this.setState({ place: e.target.value })
-    }
-
-    onChangeDate(e) {
-        this.setState({ date: e.target.value })
-    }
-    onChangeDescription(e) {
-        this.setState({ description: e.target.value })
-    }
-
-    onSubmit(e) {
-        e.preventDefault()
-
-        const eventObject = {
-            name: this.state.name,
-            place: this.state.place,
-            date: this.state.date,
-            description: this.state.description
-        };
-
-        axios.put('http://localhost:5000/events/update/' + this.props.match.params.id, eventObject)
-            .then((res) => {
-                console.log(res.data)
-                console.log('Event successfully updated')
-            }).catch((error) => {
-                console.log(error)
-            })
-
-        // Redirect to Student List 
+        })
         this.props.history.push('/events')
     }
 
-
     render() {
         return (<div className="form-wrapper">
-            <Form onSubmit={this.onSubmit}>
+            <Form >
                 <Form.Group controlId="Name">
                     <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" value={this.state.name} onChange={this.onChangeName} />
+                    <Form.Control type="text" value={this.state.name} onChange={this.handleChangeInputName} />
                 </Form.Group>
 
                 <Form.Group controlId="Name">
                     <Form.Label>Place</Form.Label>
-                    <Form.Control type="text" value={this.state.place} onChange={this.onChangePlace} />
+                    <Form.Control type="text" value={this.state.place} onChange={this.handleChangeInputPlace} />
                 </Form.Group>
 
                 <Form.Group controlId="Name">
                     <Form.Label>Date</Form.Label>
-                    <Form.Control type="date" value={this.state.date} onChange={this.onChangeDate} />
+                    <Form.Control type="date" value={this.state.date} onChange={this.handleChangeInputDate} />
                 </Form.Group>
                 <Form.Group controlId="Name">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control type="textarea" value={this.state.description} onChange={this.onChangeDescription} />
+                    <Form.Control type="textarea" value={this.state.description} onChange={this.handleChangeInputDescription} />
                 </Form.Group>
 
 
-                <Button variant="danger" size="lg" block="block" type="submit">
+                <Button variant="primary" size="sm" onClick={this.handleUpdateEvent} block="block" type="submit">
                     Update Event
+        </Button>
+                <Button variant="danger" size="sm" href={'/events'} block="block">
+                    Back to Events
         </Button>
             </Form>
         </div>);

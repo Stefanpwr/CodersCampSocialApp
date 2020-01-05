@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://10.0.0.2:5000/api',
+    baseURL: '/api',
 })
 
 export const insertEvent = payload => api.post('/events', payload);
