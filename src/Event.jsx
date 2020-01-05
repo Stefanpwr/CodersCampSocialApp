@@ -6,12 +6,25 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "bootstrap/dist/css/bootstrap.css";
 import "./App.css";
-
+import Button from 'react-bootstrap/Button';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import EventInsert from "./EventInsert";
 import EventUpdate from "./EventUpdate";
 import EventList from "./EventList";
+import Events from "./imgs/event.jpg"
+const EventsPage = () => {
+    return (
+        <div>
+            <div style={{ width: "60%", margin: "0 auto" }}>
+                <img src={Events} alt="Events" style={{ width: "100%" }} />
+                <Button variant="danger" size="sm" href={'/profile'} block="block">
+                    Back to Profile
+</Button>
+            </div>
+        </div>
+    );
+};
 
 function Event() {
     return (<Router>
@@ -43,12 +56,12 @@ function Event() {
 
 
 
-            <Container>
+            <Container >
 
-                <Col md={24} >
+                <Col  >
                     <div className="wrapper">
                         <Switch>
-                            <Route exact path='/events/' component={EventList} />
+                            <Route exact path='/events/' component={EventsPage} />
                             <Route path="/events/create" component={EventInsert} />
                             <Route path="/events/list" component={EventList} />
                         </Switch>
